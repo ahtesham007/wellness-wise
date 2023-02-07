@@ -16,18 +16,20 @@
     </nav>
     <div class="container">
       <div class="window">
-        <h3>Window 1</h3>
+        <h3>Brain Tumor</h3>
 
         <form action="/predict/tumor" method="post" enctype="multipart/form-data">
-            <input type="file" class="form-control" id="image1" name="image">
-            <button class="btn btn-primary" id="upload1">Upload</button>
+            <input type="file" class="form-control" id="image1" name="image" accept="image/*" required>
+            <button class="btn btn-primary" id="upload1">Predict</button>
         </form>
         
       </div>
       <div class="window">
-        <h3>Window 2</h3>
-        <input type="file" class="form-control" id="image2">
-        <button class="btn btn-primary" id="upload2">Upload</button>
+        <h3>Pneumonia</h3>
+        <form action="/predict/pneumonia" method="post" enctype="multipart/form-data">        
+        <input type="file" class="form-control" id="image2" name="image" accept="image/*" required>
+        <button class="btn btn-primary" id="upload2">Predict</button>
+      </form>
       </div>
     </div>
     <footer class="bg-light py-3">

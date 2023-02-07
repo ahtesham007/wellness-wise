@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify, render_template
 from flask_caching import Cache
 from werkzeug.utils import secure_filename
 import os
-import tensorflow as tf
-import numpy as np
 import logging
 
 from prediction import predict_image
@@ -36,13 +34,15 @@ def predict():
 
         if image:
             filename = secure_filename(image.filename)
-            image.save(os.path.join("uploads", filename))
+            image_full_path = os.path.join("static/uploads", filename)
+            image.save(image_full_path)
 
             # Load the machine learning model and use it to make predictions
             class_type, accuracy = predict_image('brain_tumor_model/', image)
 
             # Return the image and result as a response
-            return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}},200
+            # return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}},200
+            return render_template('result.html', res = class_type, acc = accuracy, img = "uploads/"+filename)
         else:
             return {"error": "Image is required."}, 400
 
@@ -52,17 +52,20 @@ def predict_pneumonia():
     if request.method == "POST":
         app.logger.info('predict pneumonia page accessed')
         image = request.files["image"]
-        name = request.form["name"]
+        # name = request.form["name"]
 
         if image:
             filename = secure_filename(image.filename)
-            image.save(os.path.join("uploads", filename))
+            image_full_path = os.path.join("static/uploads", filename)
+            image.save(image_full_path)
 
             # Load the machine learning model and use it to make predictions
             class_type, accuracy = predict_image('pneumonia_model/', image)
 
             # Return the image and result as a response
-            return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}}, 200
+            # return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}}, 200
+            return render_template('result.html', res = class_type, acc = accuracy, img = "uploads/"+filename)
+
         else:
             return {"error": "Image is required."}, 400
 
