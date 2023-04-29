@@ -6,7 +6,7 @@ import logging
 
 from prediction import predict_image
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, static_folder='static', static_url_path='/')
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 logging.basicConfig(
@@ -18,12 +18,11 @@ logging.basicConfig(
     ]
 )
 
-@app.route("/", methods=["GET"])
-@cache.cached(timeout=1)
+@app.route("/")
 def index():
     if request.method == "GET":
         app.logger.info('index page accessed')
-        return render_template('index.html')
+        return app.send_static_file('index.html')
 
 @app.route("/predict/tumor", methods=["POST"])
 @cache.cached(timeout=10)
