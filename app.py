@@ -3,10 +3,12 @@ from flask_caching import Cache
 from werkzeug.utils import secure_filename
 import os
 import logging
+from flask_cors import CORS
 
 from prediction import predict_image
 
-app = Flask(__name__, static_folder='static', static_url_path='/')
+app = Flask(__name__)
+CORS(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 logging.basicConfig(
@@ -22,7 +24,7 @@ logging.basicConfig(
 def index():
     if request.method == "GET":
         app.logger.info('index page accessed')
-        return app.send_static_file('index.html')
+        return jsonify({"status":"server is healthy"}), 200
 
 @app.route("/predict/tumor", methods=["POST"])
 @cache.cached(timeout=10)
@@ -41,7 +43,7 @@ def predict():
 
             # Return the image and result as a response
             # return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}},200
-            return render_template('result.html', res = class_type, acc = accuracy, img = "uploads/"+filename)
+            return {"res" : class_type, "accuracy" : accuracy}, 200
         else:
             return {"error": "Image is required."}, 400
 
@@ -63,7 +65,7 @@ def predict_pneumonia():
 
             # Return the image and result as a response
             # return {"image": filename, "result": {"class":class_type, "accuracy": accuracy}}, 200
-            return render_template('result.html', res = class_type, acc = accuracy, img = "uploads/"+filename)
+            return {"res" : class_type, "accuracy" : accuracy}, 200
 
         else:
             return {"error": "Image is required."}, 400
