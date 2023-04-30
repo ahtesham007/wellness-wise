@@ -1,2 +1,3 @@
-0 Brain Tumor - yes
-1 Brain Tumor - no
+0 yes
+1 no
+2 irrelevent

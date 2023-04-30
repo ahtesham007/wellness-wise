@@ -1,2 +1,3 @@
-0 Normal
-1 Pneumonia
+0 yes
+1 irrelevent
+2 no
