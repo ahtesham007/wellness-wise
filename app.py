@@ -49,7 +49,7 @@ def predict():
 
 @app.route("/predict/pneumonia", methods=["POST"])
 @cache.cached(timeout=10)
-def predict_pneumonia():
+def predict_pneumonia():    
     if request.method == "POST":
         app.logger.info('predict pneumonia page accessed')
         image = request.files["image"]
